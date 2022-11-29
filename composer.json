@@ -1,0 +1,48 @@
+{
+    "name": "thebachtiarz-company/laravel-finance-v1",
+    "description": "A Finance Network Store for Laravel Project v1",
+    "type": "library",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^9.30",
+        "thebachtiarz/laravel-toolkit-v1": "^2.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TheBachtiarz\\Finance\\": "src/"
+        },
+        "files": [
+            "helper/helper.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "thebachtiarz-company",
+            "email": "thebachtiarz.company@gmail.com"
+        }
+    ],
+    "keywords": [
+        "laravel",
+        "thebachtiarz",
+        "user-auth",
+        "finance"
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TheBachtiarz\\Finance\\ServiceProvider"
+            ]
+        }
+    },
+    "homepage": "https://github.com/thebachtiarz-company/laravel-finance-v1",
+    "support": {
+        "issues": "https://github.com/thebachtiarz-company/laravel-finance-v1/issues",
+        "source": "https://github.com/thebachtiarz-company/laravel-finance-v1"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
