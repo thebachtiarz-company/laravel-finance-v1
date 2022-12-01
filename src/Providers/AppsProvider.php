@@ -2,12 +2,14 @@
 
 namespace TheBachtiarz\Finance\Providers;
 
+use TheBachtiarz\Finance\Console\Commands\OwnerCreateCommand;
+
 class AppsProvider
 {
     //
 
     public const COMMANDS = [
-        // 
+        OwnerCreateCommand::class
     ];
 
     /**
