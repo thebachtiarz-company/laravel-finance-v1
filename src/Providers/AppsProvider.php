@@ -2,6 +2,7 @@
 
 namespace TheBachtiarz\Finance\Providers;
 
+use TheBachtiarz\Finance\Console\Commands\ConfigSystemSyncronizeCommand;
 use TheBachtiarz\Finance\Console\Commands\OwnerCreateCommand;
 
 class AppsProvider
@@ -9,7 +10,8 @@ class AppsProvider
     //
 
     public const COMMANDS = [
-        OwnerCreateCommand::class
+        OwnerCreateCommand::class,
+        ConfigSystemSyncronizeCommand::class
     ];
 
     /**

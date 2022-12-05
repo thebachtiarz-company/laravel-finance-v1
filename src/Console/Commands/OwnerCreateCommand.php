@@ -29,7 +29,7 @@ class OwnerCreateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Finance: create new owner finance (single owner only)';
+    protected $description = 'Finance: Create new owner finance (single owner only)';
 
     /**
      * proposed owner code
@@ -56,7 +56,7 @@ class OwnerCreateCommand extends Command
     public function handle(): int
     {
         if (tbfinanceconfig('is_multi_owner')) {
-            $this->warn('Cancel this process, because this application is intended for multiple owners.');
+            $this->warn('======> Cancel this process, because this application is intended for multiple owners.');
 
             die;
         }
@@ -74,7 +74,7 @@ class OwnerCreateCommand extends Command
                 $this->updateOwnerCodeAndConfigFile();
             }
         } catch (\Throwable $th) {
-            $this->warn('Owner code has been declared, use --force to change it.');
+            $this->warn('======> Owner code has been declared, use --force to change it.');
 
             $this->proposedOwnerCode = $currentOwnerCode;
         }
@@ -90,17 +90,17 @@ class OwnerCreateCommand extends Command
 
             Artisan::call('config:cache');
 
-            Log::channel('application')->info("- Successfully set new finance owner code");
+            Log::channel('application')->info("----> Successfully set new finance owner code");
 
-            $this->info('Owner code set successfully.');
+            $this->info('======> Owner code set successfully.');
 
-            return 1;
+            return Command::SUCCESS;
         } catch (\Throwable $th) {
-            Log::channel('application')->warning("- Failed to set new finance owner code: {$th->getMessage()}");
+            Log::channel('application')->warning("----> Failed to set new finance owner code: {$th->getMessage()}");
 
-            $this->warn('Failed to set owner code.');
+            $this->warn('======> Failed to set owner code.');
 
-            return 0;
+            return Command::FAILURE;
         }
     }
 
