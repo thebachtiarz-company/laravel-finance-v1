@@ -30,8 +30,8 @@ interface UrlDomainInterface
     public const URL_OWNER_UPDATE_STATUS_NAME = 'owner-update-status';
 
     public const URL_FINANCE_CREATE_NAME = 'finance-create';
-    public const URL_FINANCE_UPDATE_ACCOUNT_NAME = 'finance-update';
-    public const URL_FINANCE_UPDATE_TYPE_NAME = 'finance-update';
+    public const URL_FINANCE_UPDATE_ACCOUNT_NAME = 'finance-update-code';
+    public const URL_FINANCE_UPDATE_TYPE_NAME = 'finance-update-type';
 
     public const URL_PURPOSE_CREATE_NAME = 'purpose-create';
     public const URL_PURPOSE_LIST_NAME = 'purpose-list';
