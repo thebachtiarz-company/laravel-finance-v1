@@ -15,6 +15,7 @@ interface FinanceConfigInterface
     public const ATTRIBUTE_FINANCE_ACCOUNT = 'finance_account';
     public const ATTRIBUTE_FINANCE_TYPE = 'finance_type';
     public const ATTRIBUTE_PURPOSE_CODE = 'purpose_code';
+    public const ATTRIBUTE_PURPOSE_INFORMATION = 'purpose_information';
     public const ATTRIBUTE_BALANCE_TYPE = 'balance_type';
     public const ATTRIBUTE_BALANCE_NOMINAL = 'balance_nominal';
     public const ATTRIBUTE_BALANCE_INFORMATION = 'balance_information';
