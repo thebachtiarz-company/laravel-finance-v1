@@ -22,7 +22,6 @@ class PurposeService
     public static function create(string $purposeInformation): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -37,17 +36,20 @@ class PurposeService
     /**
      * Get finance purpose list by owner
      *
+     * @param integer|null $perPage Default: 10
+     * @param integer|null $currentPage Default: 1
      * @return array
      */
-    public static function list(): array
+    public static function list(?int $perPage = 10, ?int $currentPage = 1): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data']
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_PERPAGE) => $perPage,
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
         return CurlService::setUrl(UrlDomainInterface::URL_PURPOSE_LIST_NAME)->setData($_body)->post();
@@ -62,7 +64,6 @@ class PurposeService
     public static function detail(string $purposeCode): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -84,7 +85,6 @@ class PurposeService
     public function update(string $purposeCode, string $purposeInformation): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 

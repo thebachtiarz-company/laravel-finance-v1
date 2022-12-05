@@ -10,6 +10,13 @@ class ConfigSystemHelper
 {
     //
 
+    /**
+     * Config system
+     *
+     * @var array
+     */
+    private static array $configSystem = [];
+
     // ? Public Methods
     /**
      * Sync config system
@@ -36,9 +43,11 @@ class ConfigSystemHelper
     public static function getConfig(string $configName): mixed
     {
         try {
-            $_cacheConfig = Cache::get(FinanceConfigInterface::FINANCE_ATTRIBUTES_CONFIG_SYSTEM_NAME);
+            if (!static::$configSystem) {
+                static::$configSystem = Cache::get(FinanceConfigInterface::FINANCE_ATTRIBUTES_CONFIG_SYSTEM_NAME);
+            }
 
-            return $_cacheConfig[$configName];
+            return static::$configSystem[$configName];
         } catch (\Throwable $th) {
             return null;
         }

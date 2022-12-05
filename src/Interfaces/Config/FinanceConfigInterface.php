@@ -19,10 +19,15 @@ interface FinanceConfigInterface
     public const ATTRIBUTE_BALANCE_TYPE = 'balance_type';
     public const ATTRIBUTE_BALANCE_NOMINAL = 'balance_nominal';
     public const ATTRIBUTE_BALANCE_INFORMATION = 'balance_information';
-    public const ATTRIBUTE_DATE_RANGE = 'date_range';
-    public const ATTRIBUTE_TYPE_OPTIONS = 'balance_type_options';
-    public const ATTRIBUTE_TYPE_CREDIT_CODE = 'balance_type_credit_code';
-    public const ATTRIBUTE_TYPE_DEBIT_CODE = 'balance_type_debit_code';
-    public const ATTRIBUTE_NOMINAL_CREDIT_RULE = 'balance_nominal_credit_rule';
-    public const ATTRIBUTE_NOMINAL_DEBIT_RULE = 'balance_nominal_debit_rule';
+    public const ATTRIBUTE_BALANCE_DATE_FROM = 'balance_date_from';
+    public const ATTRIBUTE_BALANCE_DATE_TO = 'balance_date_to';
+    public const ATTRIBUTE_BALANCE_TYPE_OPTIONS = 'balance_type_options';
+    public const ATTRIBUTE_BALANCE_TYPE_CREDIT_CODE = 'balance_type_credit_code';
+    public const ATTRIBUTE_BALANCE_TYPE_DEBIT_CODE = 'balance_type_debit_code';
+    public const ATTRIBUTE_BALANCE_NOMINAL_CREDIT_RULE = 'balance_nominal_credit_rule';
+    public const ATTRIBUTE_BALANCE_NOMINAL_DEBIT_RULE = 'balance_nominal_debit_rule';
+    public const ATTRIBUTE_BALANCE_REFERENCE = 'balance_reference';
+
+    public const PAGINATE_PERPAGE = 'paginate_perpage';
+    public const PAGINATE_CURRENTPAGE = 'paginate_currentpage';
 }

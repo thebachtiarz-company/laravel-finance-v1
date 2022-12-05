@@ -17,6 +17,7 @@ interface UrlDomainInterface
         self::URL_PURPOSE_DETAIL_NAME => self::URL_PURPOSE_DETAIL_PATH,
         self::URL_PURPOSE_UPDATE_NAME => self::URL_PURPOSE_UPDATE_PATH,
         self::URL_BALANCE_CREATE_NAME => self::URL_BALANCE_CREATE_PATH,
+        self::URL_BALANCE_HISTORY_NAME => self::URL_BALANCE_HISTORY_PATH,
         self::URL_BALANCE_DETAIL_NAME => self::URL_BALANCE_DETAIL_PATH,
         self::URL_BALANCE_FINANCESINPURPOSE_NAME => self::URL_BALANCE_FINANCESINPURPOSE_PATH,
         self::URL_BALANCE_PURPOSESINFINANCE_NAME => self::URL_BALANCE_PURPOSESINFINANCE_PATH
@@ -40,6 +41,7 @@ interface UrlDomainInterface
 
 
     public const URL_BALANCE_CREATE_NAME = 'balance-create';
+    public const URL_BALANCE_HISTORY_NAME = 'balance-history';
     public const URL_BALANCE_DETAIL_NAME = 'balance-detail';
     public const URL_BALANCE_FINANCESINPURPOSE_NAME = 'balance-finances-in-purpose';
     public const URL_BALANCE_PURPOSESINFINANCE_NAME = 'balance-purposes-in-finance';
@@ -61,6 +63,7 @@ interface UrlDomainInterface
     public const URL_PURPOSE_UPDATE_PATH = 'purpose/update';
 
     public const URL_BALANCE_CREATE_PATH = 'balance/create-transaction';
+    public const URL_BALANCE_HISTORY_PATH = 'balance/transaction-histories';
     public const URL_BALANCE_DETAIL_PATH = 'balance/detail-transaction';
     public const URL_BALANCE_FINANCESINPURPOSE_PATH = 'balance/list-finances-in-purpose';
     public const URL_BALANCE_PURPOSESINFINANCE_PATH = 'balance/list-purposes-in-finance';

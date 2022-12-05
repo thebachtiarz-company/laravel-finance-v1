@@ -31,7 +31,6 @@ class OwnerService
     public static function updateCode(): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -51,7 +50,6 @@ class OwnerService
     public static function updateStatus(string $ownerStatus): array
     {
         $ownerResolver = self::ownerBodyDataResolver();
-
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
