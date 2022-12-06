@@ -12,6 +12,24 @@ class PurposeService
 {
     use OwnerBodyDataTrait, DataResponse;
 
+    /**
+     * Curl Service
+     *
+     * @var CurlService
+     */
+    protected CurlService $curlService;
+
+    /**
+     * Constructor
+     *
+     * @param CurlService $curlService
+     */
+    public function __construct(
+        CurlService $curlService
+    ) {
+        $this->curlService = $curlService;
+    }
+
     // ? Public Methods
     /**
      * Create new finance purpose
@@ -19,9 +37,9 @@ class PurposeService
      * @param string $purposeInformation
      * @return array
      */
-    public static function create(string $purposeInformation): array
+    public function create(string $purposeInformation): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -30,7 +48,7 @@ class PurposeService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_INFORMATION) => $purposeInformation
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_PURPOSE_CREATE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_CREATE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -40,9 +58,9 @@ class PurposeService
      * @param integer|null $currentPage Default: 1
      * @return array
      */
-    public static function list(?int $perPage = 10, ?int $currentPage = 1): array
+    public function list(?int $perPage = 10, ?int $currentPage = 1): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -52,7 +70,7 @@ class PurposeService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_PURPOSE_LIST_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_LIST_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -61,9 +79,9 @@ class PurposeService
      * @param string $purposeCode
      * @return array
      */
-    public static function detail(string $purposeCode): array
+    public function detail(string $purposeCode): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -72,7 +90,7 @@ class PurposeService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_PURPOSE_DETAIL_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_DETAIL_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -84,7 +102,7 @@ class PurposeService
      */
     public function update(string $purposeCode, string $purposeInformation): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -94,7 +112,7 @@ class PurposeService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_INFORMATION) => $purposeInformation
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_PURPOSE_UPDATE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_UPDATE_NAME)->setBody($_body)->post();
     }
 
     // ? Private Methods

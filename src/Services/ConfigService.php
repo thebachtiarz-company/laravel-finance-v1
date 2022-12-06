@@ -8,15 +8,33 @@ class ConfigService
 {
     //
 
+    /**
+     * Curl Service
+     *
+     * @var CurlService
+     */
+    protected CurlService $curlService;
+
+    /**
+     * Constructor
+     *
+     * @param CurlService $curlService
+     */
+    public function __construct(
+        CurlService $curlService
+    ) {
+        $this->curlService = $curlService;
+    }
+
     // ? Public Methods
     /**
      * Get config system
      *
      * @return array
      */
-    public static function getConfig(): array
+    public function getConfig(): array
     {
-        return CurlService::setUrl(UrlDomainInterface::URL_CONFIG_SYSTEM_ATTRIBUTES_NAME)->get();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_CONFIG_SYSTEM_ATTRIBUTES_NAME)->get();
     }
 
     // ? Private Methods

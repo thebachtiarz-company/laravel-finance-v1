@@ -23,6 +23,25 @@ class ConfigSystemSyncronizeCommand extends Command
     protected $description = 'Finance: Syncronize config system from server';
 
     /**
+     * Config System Helper
+     *
+     * @var ConfigSystemHelper
+     */
+    protected ConfigSystemHelper $configSystemHelper;
+
+    /**
+     * Constructor
+     *
+     * @param ConfigSystemHelper $configSystemHelper
+     */
+    public function __construct(
+        ConfigSystemHelper $configSystemHelper
+    ) {
+        $this->configSystemHelper = $configSystemHelper;
+        parent::__construct();
+    }
+
+    /**
      * Execute the console command.
      *
      * @return int
@@ -33,7 +52,7 @@ class ConfigSystemSyncronizeCommand extends Command
             $this->info('======> Finance config system syncronizing: start');
             Log::channel('application')->info("----> Finance config system syncronizing: start");
 
-            ConfigSystemHelper::syncConfigAttributesFromServer();
+            $this->configSystemHelper->syncConfigAttributesFromServer();
 
             $this->info('======> Finance config system syncronizing: finish');
             Log::channel('application')->info("----> Finance config system syncronizing: finish");

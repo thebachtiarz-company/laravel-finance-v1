@@ -12,15 +12,33 @@ class OwnerService
 {
     use OwnerBodyDataTrait, DataResponse;
 
+    /**
+     * Curl Service
+     *
+     * @var CurlService
+     */
+    protected CurlService $curlService;
+
+    /**
+     * Constructor
+     *
+     * @param CurlService $curlService
+     */
+    public function __construct(
+        CurlService $curlService
+    ) {
+        $this->curlService = $curlService;
+    }
+
     // ? Public Methods
     /**
      * Create new owner
      *
      * @return array
      */
-    public static function create(): array
+    public function create(): array
     {
-        return CurlService::setUrl(UrlDomainInterface::URL_OWNER_CREATE_NAME)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_OWNER_CREATE_NAME)->post();
     }
 
     /**
@@ -28,9 +46,9 @@ class OwnerService
      *
      * @return array
      */
-    public static function updateCode(): array
+    public function updateCode(): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -38,7 +56,7 @@ class OwnerService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data']
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_OWNER_UPDATE_CODE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_OWNER_UPDATE_CODE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -47,9 +65,9 @@ class OwnerService
      * @param string $ownerStatus
      * @return array
      */
-    public static function updateStatus(string $ownerStatus): array
+    public function updateStatus(string $ownerStatus): array
     {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -58,7 +76,7 @@ class OwnerService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_STATUS) => $ownerStatus
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_OWNER_UPDATE_STATUS_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_OWNER_UPDATE_STATUS_NAME)->setBody($_body)->post();
     }
 
     // ? Private Methods

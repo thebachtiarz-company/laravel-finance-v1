@@ -32,20 +32,29 @@ class OwnerCreateCommand extends Command
     protected $description = 'Finance: Create new owner finance (single owner only)';
 
     /**
+     * Owner Service
+     *
+     * @var OwnerService
+     */
+    protected OwnerService $ownerService;
+
+    /**
      * proposed owner code
      *
      * @var string
      */
-    private $proposedOwnerCode = "";
+    private string $proposedOwnerCode = "";
 
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @param OwnerService $ownerService
      */
-    public function __construct()
-    {
+    public function __construct(
+        OwnerService $ownerService
+    ) {
         parent::__construct();
+        $this->ownerService = $ownerService;
     }
 
     /**
@@ -112,7 +121,7 @@ class OwnerCreateCommand extends Command
     private function updateOwnerCodeAndConfigFile(): void
     {
         try {
-            $generateOwnerCode = OwnerService::create();
+            $generateOwnerCode = $this->ownerService->create();
 
             throw_if(!$generateOwnerCode['status'], 'Exception', $generateOwnerCode['message']);
 

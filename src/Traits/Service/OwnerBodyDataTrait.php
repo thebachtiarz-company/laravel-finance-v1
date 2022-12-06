@@ -17,25 +17,23 @@ trait OwnerBodyDataTrait
      *
      * @var string|null
      */
-    private static ?string $ownerCode = null;
+    protected ?string $ownerCode = null;
 
     // ? Public Methods
-
-    // ? Private Methods
     /**
      * Owner body data resolver
      *
      * @return array
      */
-    private static function ownerBodyDataResolver(): array
+    public function ownerBodyDataResolver(): array
     {
         $result = ['status' => false, 'data' => null, 'message' => ''];
 
         try {
-            throw_if(tbfinanceconfig('is_multi_owner') && !static::$ownerCode, 'Exception', "Owner code required");
+            throw_if(tbfinanceconfig('is_multi_owner') && !$this->ownerCode, 'Exception', "Owner code required");
 
             $ownerCode = tbfinanceconfig('is_multi_owner')
-                ? static::$ownerCode
+                ? $this->ownerCode
                 : tbfinanceconfig(ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE));
 
             $result['status'] = true;
@@ -47,6 +45,8 @@ trait OwnerBodyDataTrait
         }
     }
 
+    // ? Private Methods
+
     // ? Setter Modules
     /**
      * Set owner code
@@ -54,10 +54,10 @@ trait OwnerBodyDataTrait
      * @param string|null $ownerCode
      * @return static
      */
-    public static function setOwnerCode(?string $ownerCode): static
+    public function setOwnerCode(?string $ownerCode): static
     {
-        static::$ownerCode = $ownerCode;
+        $this->ownerCode = $ownerCode;
 
-        return new static;
+        return $this;
     }
 }

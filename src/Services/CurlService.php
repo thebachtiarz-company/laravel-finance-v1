@@ -4,23 +4,18 @@ namespace TheBachtiarz\Finance\Services;
 
 use TheBachtiarz\Finance\Interfaces\Config\UrlDomainInterface;
 use TheBachtiarz\Finance\Logs\FinanceProcessLog;
-use TheBachtiarz\Toolkit\Helper\Curl\CurlRestService;
+use TheBachtiarz\Toolkit\Helper\Curl\AbstractCurl;
 
-class CurlService
+class CurlService extends AbstractCurl
 {
-    use CurlRestService {
-        get as public getOrigin;
-        post as public postOrigin;
-    }
-
     /**
      * {@inheritDoc}
      *
      * With logger.
      */
-    public static function get(): array
+    public function get(): array
     {
-        $process = self::getOrigin();
+        $process = parent::get();
 
         FinanceProcessLog::status($process['status'] ?? false)->message($process['message'] ?? "")->log();
 
@@ -32,9 +27,9 @@ class CurlService
      *
      * With logger.
      */
-    public static function post(): array
+    public function post(): array
     {
-        $process = self::postOrigin();
+        $process = parent::post();
 
         FinanceProcessLog::status($process['status'] ?? false)->message($process['message'] ?? "")->log();
 
@@ -44,22 +39,20 @@ class CurlService
     /**
      * {@inheritDoc}
      */
-    private static function baseDomainResolver(): string
+    protected function urlDomainResolver(): string
     {
-        return tbfinanceconfig('base_url');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    private static function urlResolver(): string
-    {
-        $_baseDomain = self::baseDomainResolver();
-
+        $_baseDomain = tbfinanceconfig('base_url');
         $_prefix = tbfinanceconfig('api_prefix');
-
-        $_endPoint = UrlDomainInterface::URL_AVAILABLE_OPTIONS[self::$url];
+        $_endPoint = UrlDomainInterface::URL_AVAILABLE_OPTIONS[$this->getUrl()];
 
         return "{$_baseDomain}/{$_prefix}/{$_endPoint}";
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function bodyDataResolver(): array
+    {
+        return $this->body;
     }
 }

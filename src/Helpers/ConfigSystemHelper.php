@@ -11,11 +11,29 @@ class ConfigSystemHelper
     //
 
     /**
+     * Config Service
+     *
+     * @var ConfigService
+     */
+    protected ConfigService $configService;
+
+    /**
      * Config system
      *
      * @var array
      */
     private static array $configSystem = [];
+
+    /**
+     * Constructor
+     *
+     * @param ConfigService $configService
+     */
+    public function __construct(
+        ConfigService $configService
+    ) {
+        $this->configService = $configService;
+    }
 
     // ? Public Methods
     /**
@@ -23,9 +41,9 @@ class ConfigSystemHelper
      *
      * @return array
      */
-    public static function syncConfigAttributesFromServer(): array
+    public function syncConfigAttributesFromServer(): array
     {
-        $_configSystem = ConfigService::getConfig();
+        $_configSystem = $this->configService->getConfig();
 
         throw_if(!$_configSystem['status'], 'Exception', $_configSystem['message']);
 

@@ -15,6 +15,24 @@ class BalanceService
 {
     use OwnerBodyDataTrait, BalanceTransactionPolicyTrait, CarbonHelper, DataResponse;
 
+    /**
+     * Curl Service
+     *
+     * @var CurlService
+     */
+    protected CurlService $curlService;
+
+    /**
+     * Constructor
+     *
+     * @param CurlService $curlService
+     */
+    public function __construct(
+        CurlService $curlService
+    ) {
+        $this->curlService = $curlService;
+    }
+
     // ? Public Methods
     /**
      * Create new transaction
@@ -26,14 +44,14 @@ class BalanceService
      * @param string $balanceInformation
      * @return array
      */
-    public static function create(
+    public function create(
         string $financeAccount,
         string $purposeCode,
         string $balanceType,
         string $balanceNominal,
         string $balanceInformation
     ): array {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -54,7 +72,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_INFORMATION) => $balanceInformation
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_BALANCE_CREATE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_CREATE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -68,7 +86,7 @@ class BalanceService
      * @param integer|null $currentPage Default: 1
      * @return array
      */
-    public static function transactionHistories(
+    public function transactionHistories(
         string $financeAccount,
         string $purposeCode,
         ?string $dateFrom = null,
@@ -85,7 +103,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -94,13 +112,13 @@ class BalanceService
      * @param string $transactionReference
      * @return array
      */
-    public static function transactionDetail(string $transactionReference): array
+    public function transactionDetail(string $transactionReference): array
     {
         $_body = [
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_REFERENCE) => $transactionReference
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_BALANCE_DETAIL_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_DETAIL_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -114,7 +132,7 @@ class BalanceService
      * @param integer|null $currentPage
      * @return array
      */
-    public static function financesInPurpose(
+    public function financesInPurpose(
         string $ownerCode,
         string $purposeCode,
         ?string $dateFrom = null,
@@ -122,7 +140,7 @@ class BalanceService
         ?int $perPage = 10,
         ?int $currentPage = 1
     ): array {
-        $ownerResolver = self::ownerBodyDataResolver();
+        $ownerResolver = $this->ownerBodyDataResolver();
         if (!$ownerResolver['status'])
             return self::errorResponse($ownerResolver['message']);
 
@@ -135,7 +153,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -148,7 +166,7 @@ class BalanceService
      * @param integer|null $currentPage
      * @return array
      */
-    public static function purposesInFinance(
+    public function purposesInFinance(
         string $financeAccount,
         ?string $dateFrom = null,
         ?string $dateTo = null,
@@ -163,7 +181,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return CurlService::setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setData($_body)->post();
+        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setBody($_body)->post();
     }
 
     // ? Private Methods
