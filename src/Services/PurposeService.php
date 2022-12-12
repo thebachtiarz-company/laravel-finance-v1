@@ -7,48 +7,31 @@ use TheBachtiarz\Finance\Interfaces\Config\FinanceConfigInterface;
 use TheBachtiarz\Finance\Interfaces\Config\UrlDomainInterface;
 use TheBachtiarz\Finance\Traits\Service\OwnerBodyDataTrait;
 use TheBachtiarz\Toolkit\Helper\App\Response\DataResponse;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
-class PurposeService
+class PurposeService extends CurlService
 {
     use OwnerBodyDataTrait, DataResponse;
-
-    /**
-     * Curl Service
-     *
-     * @var CurlService
-     */
-    protected CurlService $curlService;
-
-    /**
-     * Constructor
-     *
-     * @param CurlService $curlService
-     */
-    public function __construct(
-        CurlService $curlService
-    ) {
-        $this->curlService = $curlService;
-    }
 
     // ? Public Methods
     /**
      * Create new finance purpose
      *
      * @param string $purposeInformation
-     * @return array
+     * @return CurlResolverData
      */
-    public function create(string $purposeInformation): array
+    public function create(string $purposeInformation): CurlResolverData
     {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_INFORMATION) => $purposeInformation
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_CREATE_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_PURPOSE_CREATE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -56,41 +39,41 @@ class PurposeService
      *
      * @param integer|null $perPage Default: 10
      * @param integer|null $currentPage Default: 1
-     * @return array
+     * @return CurlResolverData
      */
-    public function list(?int $perPage = 10, ?int $currentPage = 1): array
+    public function list(?int $perPage = 10, ?int $currentPage = 1): CurlResolverData
     {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_PERPAGE) => $perPage,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_LIST_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_PURPOSE_LIST_NAME)->setBody($_body)->post();
     }
 
     /**
      * Detail finance purpose
      *
      * @param string $purposeCode
-     * @return array
+     * @return CurlResolverData
      */
-    public function detail(string $purposeCode): array
+    public function detail(string $purposeCode): CurlResolverData
     {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_DETAIL_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_PURPOSE_DETAIL_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -98,21 +81,21 @@ class PurposeService
      *
      * @param string $purposeCode
      * @param string $purposeInformation
-     * @return array
+     * @return CurlResolverData
      */
-    public function update(string $purposeCode, string $purposeInformation): array
+    public function update(string $purposeCode, string $purposeInformation): CurlResolverData
     {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_INFORMATION) => $purposeInformation
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_PURPOSE_UPDATE_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_PURPOSE_UPDATE_NAME)->setBody($_body)->post();
     }
 
     // ? Private Methods

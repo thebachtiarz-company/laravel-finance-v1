@@ -3,38 +3,21 @@
 namespace TheBachtiarz\Finance\Services;
 
 use TheBachtiarz\Finance\Interfaces\Config\UrlDomainInterface;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
-class ConfigService
+class ConfigService extends CurlService
 {
     //
-
-    /**
-     * Curl Service
-     *
-     * @var CurlService
-     */
-    protected CurlService $curlService;
-
-    /**
-     * Constructor
-     *
-     * @param CurlService $curlService
-     */
-    public function __construct(
-        CurlService $curlService
-    ) {
-        $this->curlService = $curlService;
-    }
 
     // ? Public Methods
     /**
      * Get config system
      *
-     * @return array
+     * @return CurlResolverData
      */
-    public function getConfig(): array
+    public function getConfig(): CurlResolverData
     {
-        return $this->curlService->setUrl(UrlDomainInterface::URL_CONFIG_SYSTEM_ATTRIBUTES_NAME)->get();
+        return $this->setUrl(UrlDomainInterface::URL_CONFIG_SYSTEM_ATTRIBUTES_NAME)->get();
     }
 
     // ? Private Methods

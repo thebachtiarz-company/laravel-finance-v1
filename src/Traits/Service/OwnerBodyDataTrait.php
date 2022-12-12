@@ -4,6 +4,7 @@ namespace TheBachtiarz\Finance\Traits\Service;
 
 use TheBachtiarz\Finance\Helpers\ConfigSystemHelper;
 use TheBachtiarz\Finance\Interfaces\Config\FinanceConfigInterface;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
 /**
  * Owner Body Data Trait
@@ -23,9 +24,9 @@ trait OwnerBodyDataTrait
     /**
      * Owner body data resolver
      *
-     * @return array
+     * @return CurlResolverData
      */
-    public function ownerBodyDataResolver(): array
+    public function ownerBodyDataResolver(): CurlResolverData
     {
         $result = ['status' => false, 'data' => null, 'message' => ''];
 
@@ -41,7 +42,7 @@ trait OwnerBodyDataTrait
         } catch (\Throwable $th) {
             $result['message'] = $th->getMessage();
         } finally {
-            return $result;
+            return new CurlResolverData($result);
         }
     }
 

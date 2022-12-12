@@ -10,28 +10,11 @@ use TheBachtiarz\Finance\Traits\Service\BalanceTransactionPolicyTrait;
 use TheBachtiarz\Finance\Traits\Service\OwnerBodyDataTrait;
 use TheBachtiarz\Toolkit\Helper\App\Carbon\CarbonHelper;
 use TheBachtiarz\Toolkit\Helper\App\Response\DataResponse;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
-class BalanceService
+class BalanceService extends CurlService
 {
     use OwnerBodyDataTrait, BalanceTransactionPolicyTrait, CarbonHelper, DataResponse;
-
-    /**
-     * Curl Service
-     *
-     * @var CurlService
-     */
-    protected CurlService $curlService;
-
-    /**
-     * Constructor
-     *
-     * @param CurlService $curlService
-     */
-    public function __construct(
-        CurlService $curlService
-    ) {
-        $this->curlService = $curlService;
-    }
 
     // ? Public Methods
     /**
@@ -42,7 +25,7 @@ class BalanceService
      * @param string $balanceType
      * @param string $balanceNominal
      * @param string $balanceInformation
-     * @return array
+     * @return CurlResolverData
      */
     public function create(
         string $financeAccount,
@@ -50,21 +33,21 @@ class BalanceService
         string $balanceType,
         string $balanceNominal,
         string $balanceInformation
-    ): array {
+    ): CurlResolverData {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $transactionTypePolicy = self::transactionTypePolicy($balanceType);
-        if (!$transactionTypePolicy['status'])
-            return self::errorResponse($transactionTypePolicy['message']);
+        if (!$transactionTypePolicy->getStatus())
+            return $transactionTypePolicy;
 
         $transactionNominalPolicy = self::transactionNominalPolicy($balanceType, $balanceNominal);
-        if (!$transactionNominalPolicy['status'])
-            return self::errorResponse($transactionNominalPolicy['message']);
+        if (!$transactionNominalPolicy->getStatus())
+            return $transactionNominalPolicy;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_FINANCE_ACCOUNT) => $financeAccount,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_TYPE) => $balanceType,
@@ -72,7 +55,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_INFORMATION) => $balanceInformation
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_CREATE_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_BALANCE_CREATE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -84,7 +67,7 @@ class BalanceService
      * @param string|null $dateTo Default: Current date format Y-m-d
      * @param integer|null $perPage Default: 10
      * @param integer|null $currentPage Default: 1
-     * @return array
+     * @return CurlResolverData
      */
     public function transactionHistories(
         string $financeAccount,
@@ -93,7 +76,7 @@ class BalanceService
         ?string $dateTo = null,
         ?int $perPage = 10,
         ?int $currentPage = 1
-    ): array {
+    ): CurlResolverData {
         $_body = [
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_FINANCE_ACCOUNT) => $financeAccount,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode,
@@ -103,22 +86,22 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setBody($_body)->post();
     }
 
     /**
      * Get detail transaction
      *
      * @param string $transactionReference
-     * @return array
+     * @return CurlResolverData
      */
-    public function transactionDetail(string $transactionReference): array
+    public function transactionDetail(string $transactionReference): CurlResolverData
     {
         $_body = [
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_REFERENCE) => $transactionReference
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_DETAIL_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_BALANCE_DETAIL_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -130,7 +113,7 @@ class BalanceService
      * @param string|null $dateTo
      * @param integer|null $perPage
      * @param integer|null $currentPage
-     * @return array
+     * @return CurlResolverData
      */
     public function financesInPurpose(
         string $ownerCode,
@@ -139,13 +122,13 @@ class BalanceService
         ?string $dateTo = null,
         ?int $perPage = 10,
         ?int $currentPage = 1
-    ): array {
+    ): CurlResolverData {
         $ownerResolver = $this->ownerBodyDataResolver();
-        if (!$ownerResolver['status'])
-            return self::errorResponse($ownerResolver['message']);
+        if (!$ownerResolver->getStatus())
+            return $ownerResolver;
 
         $_body = [
-            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver['data'],
+            ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_OWNER_CODE) => $ownerResolver->getData(),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_PURPOSE_CODE) => $purposeCode,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_DATE_FROM) => $dateFrom ?: self::dbDateTime(split: 'date'),
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_DATE_TO) => $dateTo ?: self::dbDateTime(split: 'date'),
@@ -153,7 +136,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setBody($_body)->post();
     }
 
     /**
@@ -164,7 +147,7 @@ class BalanceService
      * @param string|null $dateTo
      * @param integer|null $perPage
      * @param integer|null $currentPage
-     * @return array
+     * @return CurlResolverData
      */
     public function purposesInFinance(
         string $financeAccount,
@@ -172,7 +155,7 @@ class BalanceService
         ?string $dateTo = null,
         ?int $perPage = 10,
         ?int $currentPage = 1
-    ): array {
+    ): CurlResolverData {
         $_body = [
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_FINANCE_ACCOUNT) => $financeAccount,
             ConfigSystemHelper::getConfig(FinanceConfigInterface::ATTRIBUTE_BALANCE_DATE_FROM) => $dateFrom ?: self::dbDateTime(split: 'date'),
@@ -181,7 +164,7 @@ class BalanceService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->curlService->setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setBody($_body)->post();
+        return $this->setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setBody($_body)->post();
     }
 
     // ? Private Methods

@@ -4,6 +4,7 @@ namespace TheBachtiarz\Finance\Traits\Service;
 
 use TheBachtiarz\Finance\Helpers\ConfigSystemHelper;
 use TheBachtiarz\Finance\Interfaces\Config\FinanceConfigInterface;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
 /**
  * Balance Transaction Policy Trait
@@ -19,9 +20,9 @@ trait BalanceTransactionPolicyTrait
      * Transaction type policy
      *
      * @param string $transactionType
-     * @return array
+     * @return CurlResolverData
      */
-    private static function transactionTypePolicy(string $transactionType): array
+    private static function transactionTypePolicy(string $transactionType): CurlResolverData
     {
         $result = ['status' => false, 'data' => null, 'message' => ''];
 
@@ -35,7 +36,7 @@ trait BalanceTransactionPolicyTrait
         } catch (\Throwable $th) {
             $result['message'] = $th->getMessage();
         } finally {
-            return $result;
+            return new CurlResolverData($result);
         }
     }
 
@@ -44,9 +45,9 @@ trait BalanceTransactionPolicyTrait
      *
      * @param string $transactionType
      * @param string $transactionNominal
-     * @return array
+     * @return CurlResolverData
      */
-    private static function transactionNominalPolicy(string $transactionType, string $transactionNominal): array
+    private static function transactionNominalPolicy(string $transactionType, string $transactionNominal): CurlResolverData
     {
         $result = ['status' => false, 'data' => null, 'message' => ''];
 
@@ -103,7 +104,7 @@ trait BalanceTransactionPolicyTrait
         } catch (\Throwable $th) {
             $result['message'] = $th->getMessage();
         } finally {
-            return $result;
+            return new CurlResolverData($result);
         }
     }
 

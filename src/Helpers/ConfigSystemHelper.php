@@ -45,11 +45,11 @@ class ConfigSystemHelper
     {
         $_configSystem = $this->configService->getConfig();
 
-        throw_if(!$_configSystem['status'], 'Exception', $_configSystem['message']);
+        throw_if(!$_configSystem->getStatus(), 'Exception', $_configSystem->getMessage());
 
-        Cache::set(FinanceConfigInterface::FINANCE_ATTRIBUTES_CONFIG_SYSTEM_NAME, $_configSystem['data']);
+        Cache::set(FinanceConfigInterface::FINANCE_ATTRIBUTES_CONFIG_SYSTEM_NAME, $_configSystem->getData());
 
-        return $_configSystem['data'];
+        return $_configSystem->getData();
     }
 
     /**

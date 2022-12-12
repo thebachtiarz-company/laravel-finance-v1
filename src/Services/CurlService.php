@@ -5,6 +5,7 @@ namespace TheBachtiarz\Finance\Services;
 use TheBachtiarz\Finance\Interfaces\Config\UrlDomainInterface;
 use TheBachtiarz\Finance\Logs\FinanceProcessLog;
 use TheBachtiarz\Toolkit\Helper\Curl\AbstractCurl;
+use TheBachtiarz\Toolkit\Helper\Curl\Data\CurlResolverData;
 
 class CurlService extends AbstractCurl
 {
@@ -13,11 +14,11 @@ class CurlService extends AbstractCurl
      *
      * With logger.
      */
-    public function get(): array
+    public function get(): CurlResolverData
     {
         $process = parent::get();
 
-        FinanceProcessLog::status($process['status'] ?? false)->message($process['message'] ?? "")->log();
+        FinanceProcessLog::status($process->getStatus() ?? false)->message($process->getMessage() ?? "")->log();
 
         return $process;
     }
@@ -27,11 +28,11 @@ class CurlService extends AbstractCurl
      *
      * With logger.
      */
-    public function post(): array
+    public function post(): CurlResolverData
     {
         $process = parent::post();
 
-        FinanceProcessLog::status($process['status'] ?? false)->message($process['message'] ?? "")->log();
+        FinanceProcessLog::status($process->getStatus() ?? false)->message($process->getMessage() ?? "")->log();
 
         return $process;
     }
