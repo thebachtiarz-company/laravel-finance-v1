@@ -33,11 +33,11 @@ class ServiceProvider extends LaravelServiceProvider
         if (app()->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/' . FinanceConfigInterface::FINANCE_CONFIG_NAME . '.php' => config_path(FinanceConfigInterface::FINANCE_CONFIG_NAME . '.php'),
-            ], 'thebachtiarz-auth-config');
+            ], 'thebachtiarz-finance-config');
 
             $this->publishes([
                 __DIR__ . '/../database/migrations' => database_path('migrations'),
-            ], 'thebachtiarz-auth-migrations');
+            ], 'thebachtiarz-finance-migrations');
         }
     }
 }

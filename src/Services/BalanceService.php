@@ -86,7 +86,13 @@ class BalanceService extends CurlService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setBody($_body)->post();
+        $_result = $this->setUrl(UrlDomainInterface::URL_BALANCE_HISTORY_NAME)->setBody($_body)->post();
+
+        if ($_result->getStatus()) {
+            $_result->setData($this->convertResultData($_result->getData(), true));
+        }
+
+        return $_result;
     }
 
     /**
@@ -107,16 +113,14 @@ class BalanceService extends CurlService
     /**
      * Get list finance account latest transaction in specific finance purpose
      *
-     * @param string $ownerCode
      * @param string $purposeCode
-     * @param string|null $dateFrom
-     * @param string|null $dateTo
-     * @param integer|null $perPage
-     * @param integer|null $currentPage
+     * @param string|null $dateFrom Default: Current date format Y-m-d
+     * @param string|null $dateTo Default: Current date format Y-m-d
+     * @param integer|null $perPage Default: 10
+     * @param integer|null $currentPage Default: 1
      * @return CurlResolverData
      */
     public function financesInPurpose(
-        string $ownerCode,
         string $purposeCode,
         ?string $dateFrom = null,
         ?string $dateTo = null,
@@ -136,17 +140,23 @@ class BalanceService extends CurlService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setBody($_body)->post();
+        $_result = $this->setUrl(UrlDomainInterface::URL_BALANCE_FINANCESINPURPOSE_NAME)->setBody($_body)->post();
+
+        if ($_result->getStatus()) {
+            $_result->setData($this->convertResultData($_result->getData(), true));
+        }
+
+        return $_result;
     }
 
     /**
      * Get list finance purpose latest in specific finance account
      *
      * @param string $financeAccount
-     * @param string|null $dateFrom
-     * @param string|null $dateTo
-     * @param integer|null $perPage
-     * @param integer|null $currentPage
+     * @param string|null $dateFrom Default: Current date format Y-m-d
+     * @param string|null $dateTo Default: Current date format Y-m-d
+     * @param integer|null $perPage Default: 10
+     * @param integer|null $currentPage Default: 1
      * @return CurlResolverData
      */
     public function purposesInFinance(
@@ -164,7 +174,13 @@ class BalanceService extends CurlService
             ConfigSystemHelper::getConfig(FinanceConfigInterface::PAGINATE_CURRENTPAGE) => $currentPage
         ];
 
-        return $this->setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setBody($_body)->post();
+        $_result = $this->setUrl(UrlDomainInterface::URL_BALANCE_PURPOSESINFINANCE_NAME)->setBody($_body)->post();
+
+        if ($_result->getStatus()) {
+            $_result->setData($this->convertResultData($_result->getData(), true));
+        }
+
+        return $_result;
     }
 
     // ? Private Methods
